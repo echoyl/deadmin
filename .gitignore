@@ -54,7 +54,6 @@ public/.user.ini
 /app/Services/$projectname/*
 /app/Http/Controllers/admin/$projectname/*
 /app/Models/$projectname/*
-/config/sa.php
 /public/webstatic/*
 /resources/views/vendor/*
 /storage/api-docs/*
