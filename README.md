@@ -7,7 +7,7 @@ nav:
 # 安装
 
 ```bash
-$ git clone https://github.com/echoyl/de-admin.git
+$ git clone https://github.com/echoyl/deadmin.git
 
 #复制配置文件 
 
