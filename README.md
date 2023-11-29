@@ -20,14 +20,25 @@ $ cp .env.backup .env
 #安装拓展包
 $ composer update
 
-#执行配置文件迁移 选择Echoyl\Sa\ServiceProvider 一般是第1个 选1
-$ php artisan vendor:publish
+
+#迁移前端静态文件 及 配置文件
+$ php artisan deadmin:publish
 
 #生成基础的数据文件
 $ php artisan migrate
 
 #生成文件文件夹超链
 $ php artisan storage:link
+
+```
+
+## 更新
+```bash
+
+#更新拓展包
+$ composer update echoyl/sa
+#发布前端静态文件(强制移除旧文件)
+$ php artisan deadmin:publish --update
 
 ```
 
