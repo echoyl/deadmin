@@ -13,6 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
-        '/sadmin/*','/wxappapi/*'
+        '/sadmin/*','/wxappapi/*','/wx/*'
     ];
 }
