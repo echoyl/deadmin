@@ -33,7 +33,7 @@ class WebApi
         $response = $next($request);
         $origin = $request->server('HTTP_ORIGIN') ? $request->server('HTTP_ORIGIN') : '';
 
-        if (true) {
+        if (true && $response && method_exists($response,'header')) {
             // $response->withHeaders([
             //     'Access-Control-Allow-Origin'=>$origin
             // ]);

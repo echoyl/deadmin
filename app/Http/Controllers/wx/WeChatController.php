@@ -23,15 +23,15 @@ class WeChatController extends ApiBaseController
     {
         parent::__construct();
         $ss = new SetsService();
-        $this->account = $ss->getBase('offiaccount_account');
-
+        $account = $ss->getBase('offiaccount_account');
         try{
-            $this->app = WechatService::getOffiaccount($this->account['id']);
+            $this->app = WechatService::getOffiaccountApp($account['id']);
         }catch(Exception $e)
         {
             Log::channel('daily')->info('wechat request arrived and account not found.',request()->all());
             return $this->fail([1,$e->getMessage()]);
         }
+        [,$this->account] = WechatService::getOffiaccount($account['id']);
     }
 
 
@@ -65,7 +65,7 @@ class WeChatController extends ApiBaseController
     public function handleMsg($message)
     {
         $openid = $message->FromUserName;
-        
+        $default_msg = "你好，欢迎关注".$this->account['appname'];
         //获取信息前处理用户信息
         $user = WechatService::getOffiaccountUser($openid,$this->app);
         //$from_scene = '';
@@ -85,7 +85,7 @@ class WeChatController extends ApiBaseController
                 Log::channel('daily')->info('wechat user_info:',$user?:['no info']);
                 WechatService::subscribe($openid,true,$user,$this->app);
                 //Log::channel('daily')->info('user_info:',$user);
-                return "你好，欢迎关注".$this->account['appname'].'！';
+                return $this->account['subscribe_reply']?:$default_msg;
             }
             if($event == 'unsubscribe')
             {
@@ -97,7 +97,7 @@ class WeChatController extends ApiBaseController
                 //$from_scene = $data['EventKey'];
             }
         }
-        return '你好，欢迎关注'.$this->account['appname'].'！';
+        return $this->account['auto_reply']?:$default_msg;
     }
 
     public function auth()
