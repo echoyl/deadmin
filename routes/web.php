@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'home', 'prefix' => env('APP_PREFIX', '')], function () {
 
-    Route::middleware(['webFirst','wx'])->group(function () {
+    Route::middleware(['webFirst'])->group(function () {
         //Route::get('testdev', 'IndexController@testdev');
         Route::get('index', 'IndexController@index');
         Route::get('', 'IndexController@index');

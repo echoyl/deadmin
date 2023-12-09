@@ -14,9 +14,15 @@ class Wx
 
         $ss = new SetsService();
         $offiaccount_account = $ss->getBase('offiaccount_account_id');
+        if(!$offiaccount_account)
+        {
+            $offiaccount_account = [
+                'id'=>0,'appid'=>''
+            ];
+        }
         //d($offiaccount_account);
         $sessionKey = 'wechat.oauth_user.'.$offiaccount_account['id'];
-        if(env('APP_ENV') == 'local')
+        if(env('APP_ENV') == 'local' && false)
         {
             $openid = 'o_qRwt_GnGw5zzXY-1eg-wwf1plE';
             $appid = $offiaccount_account['appid'];
