@@ -7,7 +7,10 @@ nav:
 # 安装
 
 ```bash
+#github
 $ git clone https://github.com/echoyl/deadmin.git
+#或码云
+$ git clone https://gitee.com/deadmin/deadmin.git
 
 #复制配置文件 
 
