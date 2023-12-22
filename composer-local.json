@@ -10,16 +10,18 @@
     "require": {
         "alibabacloud/client": "^1.5",
         "darkaonline/l5-swagger": "^8.5",
-        "echoyl/sa": "^0.6",
+        "laravel/framework": "^9.0 | ^10.0",
+        "echoyl/sa": "^0.7",
         "maatwebsite/excel": "^3.1",
-        "w7corp/easywechat": "6.7"
+        "w7corp/easywechat": "^6.7"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
         "fzaninotto/faker": "^1.9.1",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^8.0",
+        "symfony/var-exporter": "^6.3"
     },
     "config": {
         "optimize-autoloader": true,
