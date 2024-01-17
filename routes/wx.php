@@ -15,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'wx','prefix'=>env('APP_PREFIX','').'wx'], function(){
     Route::any('auth', 'WeChatController@auth');
-    Route::any('server', 'WeChatController@server');
+    Route::any('serve', 'WeChatController@serve');
     //不需要微信授权写在外面
 });

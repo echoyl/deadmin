@@ -23,7 +23,7 @@ class WeChatController extends ApiBaseController
     {
         parent::__construct();
         $ss = new SetsService();
-        $account = $ss->getBase('offiaccount_account');
+        $account = $ss->getBase('offiaccount_account_id');
         try{
             $this->app = WechatService::getOffiaccountApp($account['id']);
         }catch(Exception $e)
