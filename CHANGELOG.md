@@ -1,5 +1,9 @@
 ### 更新记录
 
+## 20240123 <small>v0.7.9</small>
+- 1.新增form表单项的校验规则设置
+- 2.部分优化
+
 ## 20240117 <small>v0.7.8</small>
 - 1.新增iconSelect 替换之前的icon选择器，全量引入所有的icon
 - 2.增加导入导出按钮功能后自动增加export和import的路由
