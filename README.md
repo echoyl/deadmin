@@ -1,74 +1,18 @@
----
-nav:
-  title: 文档
-  order: 0
----
+## DeAdmin
 
-# 安装
+> 一个后台管理系统
 
-```bash
-#github
-$ git clone https://github.com/echoyl/deadmin.git
-#或码云
-$ git clone https://gitee.com/deadmin/deadmin.git
+## 概述
 
-#复制配置文件 
+前后端分离，前端页面无代码，后端少量代码，即可快速创建一个后台管理系统。通过创建菜单、模型即可生成后端相应的代码及生成路由、权限管理等。
 
-$ cp .env.backup .env
-#修改配置文件中
-#APP_NAME=你的项目名称如：echoyl
-#DB_DATABASE=你的数据库名称如：echoyl 并创建该数据库
-#数据库账号及密码
+## 效果
+![image](https://echoyl.com/storage/images/202403/yellM3ETuqqL2LjKkSWh3f96GPTryqRNWMQovXgZ.png)
 
-#安装拓展包
-$ composer update
+## 示例
+
+可以查看 [https://echoyl.com/antadmin](https://echoyl.com/antadmin) 在线查看后台效果
 
 
-#迁移前端静态文件 及 配置文件
-$ php artisan deadmin:publish
 
-#生成基础的数据文件
-$ php artisan migrate
-
-#生成文件文件夹超链
-$ php artisan storage:link
-
-```
-
-## 更新
-```bash
-
-#更新拓展包
-$ composer update echoyl/sa
-#发布前端静态文件(强制移除旧文件)
-$ php artisan deadmin:publish --update
-
-```
-
-## 服务器
-
-需要在 nginx 服务器或 web 服务器中配置 rewrite
-
-```nginx
-# laravel配置
-location / {
-    try_files $uri $uri/ /index.php?$query_string;
-}
-# 默认图片转发 根据配置图片size大小返回图片 可不配置
-location /img {
-    try_files $uri $uri/ /index.php?$query_string;
-}
-#后台前端配置
-location /antadmin/ {
-    # 用于配合 browserHistory使用
-    try_files $uri $uri/index.html /antadmin/index.html;
-}
-```
-
-## 前端
-
-安装完毕后 直接访问 http:://域名/antadmin
-
-默认账号密码 admin 123456
-
-如果需要修改的话需要启动/public/antadmindev 下面的 antdesign pro 项目
+[GitHub](https://github.com/echoyl/deadmin)
