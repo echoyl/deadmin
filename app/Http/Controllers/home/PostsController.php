@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\home;
 
-use App\Services\HelperService;
+use Echoyl\Sa\Services\HelperService;
 use Echoyl\Sa\Services\WebMenuService;
 use App\Services\PostsService;
 use App\Services\WeburlService;
@@ -138,7 +138,14 @@ class PostsController extends BaseController
         $id = request('id', 0);
 
         $ps = new PostsService($this->model,$this->category_model);
-        $detail = $this->model->where(['id' => $id, 'state' => 1])->first();
+        if($id)
+        {
+            $detail = $this->model->where(['id' => $id, 'state' => 1])->first();
+        }else
+        {
+            //如果直接指向内容
+            $detail = $this->model->where(['id' => $menu['category_id'], 'state' => 1])->first();
+        }
         $data['category'] = ['href' => 'javascript:;', 'title' => '', 'cid' => 0];
         $data['bread'] = WebMenuService::bread();
         $data['category'] = array_pop($data['bread']);
