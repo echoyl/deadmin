@@ -7,7 +7,7 @@
     "require": {
         "laravel/framework": "^9.0 | ^10.0",
         "darkaonline/l5-swagger": "^8.5",
-        "echoyl/sa": "^0.7"
+        "echoyl/sa": "^0.8"
     },
     "require-dev": {
         "symfony/var-exporter": "^6.3",
