@@ -17,4 +17,7 @@ Route::group(['namespace' => 'wx','prefix'=>env('APP_PREFIX','').'wx'], function
     Route::any('auth', 'WeChatController@auth');
     Route::any('serve', 'WeChatController@serve');
     //不需要微信授权写在外面
+    Route::middleware(['wx'])->group(function(){
+        Route::any('adminLogin', 'WeChatController@adminLogin');
+    });
 });

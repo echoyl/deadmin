@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\wx;
 
+use Echoyl\Sa\Services\AdminAppService;
 use Closure;
 use Echoyl\Sa\Http\Controllers\ApiBaseController;
+use Echoyl\Sa\Services\admin\SocketService;
+use Echoyl\Sa\Services\AdminService;
+use Echoyl\Sa\Services\HelperService;
 use Echoyl\Sa\Services\SetsService;
 use Echoyl\Sa\Services\WechatService;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 /**
  * @property \App\Services\ganchangshangcheng\AppApiService               $service
@@ -19,13 +24,17 @@ class WeChatController extends ApiBaseController
     var $account;
     var $login = true;//是否直接对接项目用户表
     var $is_admin = false;
+    var $key_name = 'offiaccount_account';//后台base配置中 公众号选择的name
     public function __construct()
     {
         parent::__construct();
         $ss = new SetsService();
-        $account = $ss->getBase('offiaccount_account_id');
+        $account = $ss->getBase($this->key_name);
         try{
-            $this->app = WechatService::getOffiaccountApp($account['id']);
+            if(!HelperService::isDev())
+            {
+                $this->app = WechatService::getOffiaccountApp($account['id']);
+            }
         }catch(Exception $e)
         {
             Log::channel('daily')->info('wechat request arrived and account not found.',request()->all());
@@ -100,6 +109,18 @@ class WeChatController extends ApiBaseController
         return $this->account['auto_reply']?:$default_msg;
     }
 
+    protected function getSessionKey()
+    {
+        return 'wechat.oauth_user.'.$this->account['id'];
+    }
+
+    protected function getUser()
+    {
+        $sessionKey = $this->getSessionKey();
+        $wechat_user = session($sessionKey);
+        return $wechat_user;
+    }
+
     public function auth()
     {
         $app = $this->app;
@@ -112,7 +133,7 @@ class WeChatController extends ApiBaseController
             //$code = request('code','');
             //d($code);
             $app_id = $app->getConfig()->get('app_id');
-            $sessionKey = 'wechat.oauth_user.'.$this->account['id'];
+            $sessionKey = $this->getSessionKey();
             
             try{
                 $user = $oauth->userFromCode($code);
@@ -150,5 +171,84 @@ class WeChatController extends ApiBaseController
         $url = webapi_request('url','');
         $config = WechatService::wxconfig($url);
         return ['code'=>0,'msg'=>'','data'=>$config];
+    }
+
+    public function adminLogin()
+    {
+        //获取当前openid绑定的后台用户情况
+        $test_open = true;
+        $we_user = $this->getUser();
+        //d($we_user);
+        //先获取一个test
+        $test_user_id = 28;
+        $users = [];
+        if($test_open)
+        {
+            $users[] = ['username'=>'test','id'=>$test_user_id];
+        }
+        //获取后台绑定的用户
+        $logs = DB::table('wechat_offiaccount_admin')->where(['openid'=>$we_user['id'],'state'=>1])->get()->toArray();
+        //d($logs);
+        $adminModel = AdminService::getUserModel();
+        foreach($logs as $log)
+        {
+            if($log->user_id == $test_user_id)
+            {
+                continue;
+            }
+            $admin = $adminModel->where(['id'=>$log->user_id])->first();
+            if(!$admin)
+            {
+                continue;
+            }
+            $users[] = ['username'=>$admin['username'],'id'=>$log->user_id];
+        }
+
+        $client_id = request('client_id');
+        $user_id = request('id');
+        $message = '';
+        if($user_id && $client_id)
+        {
+            $type = 'success';
+            $message = '登录成功';
+            //获取是否有绑定的用户信息
+            $bind = collect($users)->first(function($item) use($user_id){
+                return $item['id'] == $user_id;
+            });
+            if(!$bind)
+            {
+                $type = 'success';
+                $message = '未绑定该用户';
+            }else
+            {
+                $model = AdminService::getUserModel();
+                $user = $model->where(['id'=>$user_id])->first();
+                if($user)
+                {
+                    //检测是否已经登录了这个client
+                    $login_log = DB::table('socket_log')->where(['client_id'=>$client_id,'user_id'=>$user_id])->first();
+                    if($login_log)
+                    {
+                        $message = '已登录，请勿刷新';
+                    }else
+                    {
+                        $info =  AdminService::doLogin($user);
+                        $as = new AdminAppService;
+                        $info['userinfo'] = $as->parseUserInfo($info['userinfo'],$info['user']);
+                        unset($info['user']);
+                        $info['action'] = 'login';
+                        $info['msg'] = '登录成功，页面跳转中...';
+                        SocketService::sendToClient($client_id,['type'=>'login','data'=>$info]);
+                    }
+                    
+                }
+            }
+            
+        }else
+        {
+            $type = 'chose';
+        }
+
+        return view('wxLogin',['users'=>$users,'client_id'=>$client_id,'type'=>$type,'message'=>$message]);
     }
 }

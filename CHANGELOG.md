@@ -1,5 +1,9 @@
 ### 更新记录
 
+## 20240402 v0.8.2
+- 1.优化websocket
+- 2.新增微信扫码登录功能
+
 ## 20240327 v0.8.1
 - 1.新增websocket支持。支持后端发送 打开已有form或table页面，及发送message消息，notification消息
 

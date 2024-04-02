@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Echoyl\Sa\Services\SetsService;
 use Echoyl\Sa\Services\WechatService;
-use Overtrue\Socialite\User as SocialiteUser;
+// use Overtrue\Socialite\User as SocialiteUser;
 class Wx
 {
     public function handle($request,Closure $next)
@@ -13,16 +13,20 @@ class Wx
         //d(session('wechat.oauth_user.default'));
 
         $ss = new SetsService();
-        $offiaccount_account = $ss->getBase('offiaccount_account_id');
+        $offiaccount_account = $ss->getBase('offiaccount_account');
+        //d($offiaccount_account);
+        $sessionKey = 'wechat.oauth_user';
         if(!$offiaccount_account)
         {
             $offiaccount_account = [
                 'id'=>0,'appid'=>''
             ];
         }
-        //d($offiaccount_account);
-        $sessionKey = 'wechat.oauth_user.'.$offiaccount_account['id'];
-        if(env('APP_ENV') == 'local' && false)
+        if($offiaccount_account)
+        {
+            $sessionKey .= '.'.$offiaccount_account['id'];
+        }
+        if(env('APP_ENV') == 'local')
         {
             $openid = 'o_qRwt_GnGw5zzXY-1eg-wwf1plE';
             $appid = $offiaccount_account['appid'];
@@ -30,7 +34,7 @@ class Wx
             $wechat_user = session($sessionKey, []);
             if(!$wechat_user)
             {
-                $user = new SocialiteUser([
+                $user = [
                     'id'=>$openid,
                     'name'=>'echoyl',
                     'nickname'=>'echoyl',
@@ -50,9 +54,9 @@ class Wx
                     ],
                     'token'=>'25_Op8aKbxxa9iCPpEQiOfhU8MEA_Q9iY1xtJmTggADmY--gdlOUa7QFl3v_dOZ20GqHC4FGaa5be_HUHxR-B95wg',
                     'provider'=>'WeChat'
-                ]);
+                ];
                 //手动注入用户
-                $data = WechatService::offiaccountUser($user['raw'],$appid);
+                $data = WechatService::offiaccountUser($user,$appid);
                 session([$sessionKey => $data]);
             }
         }
@@ -66,7 +70,8 @@ class Wx
                 return response()->json(['code'=>-1,'msg'=>'请先授权微信用户信息']);
             }else
             {
-                return redirect('/'.env('APP_PREFIX','').'wx/auth');
+                $url = request()->fullUrl();
+                return redirect('/'.env('APP_PREFIX','').'wx/auth?url='.$url);
             }
             
         }
