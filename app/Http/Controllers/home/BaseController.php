@@ -19,10 +19,17 @@ class BaseController extends Controller
     {
         if($tpl)
         {
-            $alias = explode('/',$menu['alias']);
-            array_pop($alias);
-            $alias[] = $tpl;
-            $tpl = implode('/',$alias);
+            if(substr($tpl,0,1) != '/')
+            {
+                $alias = explode('/',$menu['alias']);
+                array_pop($alias);
+                $alias[] = $tpl;
+                $tpl = implode('/',$alias);
+            }else
+            {
+                $tpl = substr($tpl,1);
+            }
+            
         }
         $type = $type?'/'.$type:'';
 
