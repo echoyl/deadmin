@@ -56,7 +56,7 @@ class Wx
                     'provider'=>'WeChat'
                 ];
                 //手动注入用户
-                $data = WechatService::offiaccountUser($user,$appid);
+                $data = WechatService::offiaccountUser($user['raw'],$appid);
                 session([$sessionKey => $data]);
             }
         }
@@ -70,7 +70,7 @@ class Wx
                 return response()->json(['code'=>-1,'msg'=>'请先授权微信用户信息']);
             }else
             {
-                $url = request()->fullUrl();
+                $url = urlencode(request()->fullUrl());
                 return redirect('/'.env('APP_PREFIX','').'wx/auth?url='.$url);
             }
             

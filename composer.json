@@ -5,9 +5,8 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "laravel/framework": "^9.0 | ^10.0",
         "darkaonline/l5-swagger": "^8.5",
-        "echoyl/sa": "^0.8"
+        "echoyl/sa": "^0.9"
     },
     "require-dev": {
         "symfony/var-exporter": "^6.3",
@@ -58,11 +57,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "https://mirrors.aliyun.com/composer/"
-        }
-    }
+    "prefer-stable": true
 }
