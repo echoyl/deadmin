@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Echoyl\Sa\Services\SetsService;
 use Echoyl\Sa\Services\WechatService;
-// use Overtrue\Socialite\User as SocialiteUser;
 class Wx
 {
     public function handle($request,Closure $next)
