@@ -8,6 +8,7 @@ use App\Services\ImageService;
 use App\Services\WeburlService;
 use Echoyl\Sa\Services\WebMenuService;
 use Echoyl\Sa\Services\WebsiteService;
+use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
@@ -116,5 +117,44 @@ class IndexController extends Controller
         return $font;
     }
 
+    /**
+     * 本地测试富文本保存的图片 上线后更换为线上host
+     *
+     * @return void
+     */
+    public function onLineHandle()
+    {
+        $dev = env('DEV_APP_URL');
+        $on_line = env('APP_URL');
+
+        //menu表content替换
+        $replace = [
+            ['table_name',['field_name']],
+        ];
+        $count = [];
+        foreach($replace as $table)
+        {
+            [$table_name,$field_names] = $table;
+            $count[$table_name] = 0;
+            $list = DB::table($table_name)->limit(200)->get()->toArray();
+            foreach($list as $item)
+            {
+                $update = [];
+                foreach($field_names as $field)
+                {
+                    if($item->$field)
+                    {
+                        $update[$field] = str_replace($dev,$on_line,$item->$field);
+                    }
+                }
+                if(!empty($update))
+                {
+                    DB::table($table_name)->where(['id'=>$item->id])->update($update);
+                    $count[$table_name]++;
+                }
+            }
+        }
+        return ['code'=>1,'data'=>$count];
+    }
 
 }
