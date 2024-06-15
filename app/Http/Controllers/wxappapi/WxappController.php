@@ -20,7 +20,7 @@ class WxappController extends BaseController
     var $app;
 
     var $app_name_arr = [
-        'user'=>'offiaccount_account_id.id'
+        'user'=>'user_miniprogram_account_id.id'
     ];
 
     public function __construct()
