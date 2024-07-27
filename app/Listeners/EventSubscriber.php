@@ -3,6 +3,8 @@ namespace App\Listeners;
 
 use Echoyl\Sa\Services\SetsService;
 use Echoyl\Sa\Services\WechatService;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class EventSubscriber
 {
@@ -18,10 +20,19 @@ class EventSubscriber
         }
 
         $ss = new SetsService();
-        $id = $ss->get('base.offiaccount_account_id');
-        [$code,$app] = WechatService::getOffiaccount($id);
-        if($code)
+        $id = $ss->getBase('offiaccount_account.id');
+
+        try{
+            $app= WechatService::getOffiaccountApp($id);
+        }catch(Exception $e)
         {
+            Log::channel('daily')->info('wechat message send but account not found.',['error_msg'=>$e->getMessage()]);
+            return;
+        }
+
+        if(env('APP_ENV') == 'local')
+        {
+            //本地环境不发送消息
             return;
         }
 
