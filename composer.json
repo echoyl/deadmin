@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "darkaonline/l5-swagger": "^8.5",
-        "echoyl/sa": "^0.9"
+        "echoyl/sa": "dev-master"
     },
     "require-dev": {
         "symfony/var-exporter": "^6.3",
