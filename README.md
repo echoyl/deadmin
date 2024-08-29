@@ -10,6 +10,12 @@
 
 ![image](https://echoyl.com/storage/dark_0.9.6.jpg)
 
+## 开发模式
+
+> 不用修改代码就能修改页面信息
+
+![image](https://echoyl.com/storage/dev_0.9.7.jpg)
+
 ## 示例
 
 可以查看 [https://echoyl.com/antadmin](https://echoyl.com/antadmin) 在线查看后台效果
