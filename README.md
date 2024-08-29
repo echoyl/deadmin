@@ -1,12 +1,11 @@
 ## DeAdmin
 
-> 一个后台管理系统
+> 是一款可以可视化修改列表，表单，面板中的元素，生成schema配置，无需编写前端代码，就可以快速完成一个通用页面的后台管理框架
 
-## 概述
-
-前后端分离，前端页面无代码，后端少量代码，即可快速创建一个后台管理系统。通过创建菜单、模型即可生成后端相应的代码及生成路由、权限管理等。
 
 ## 效果
+![image](https://echoyl.com/storage/sider_0.9.7.jpg)
+
 ![image](https://echoyl.com/storage/light_0.9.6.jpg)
 
 ![image](https://echoyl.com/storage/dark_0.9.6.jpg)
