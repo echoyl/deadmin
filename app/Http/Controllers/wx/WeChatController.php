@@ -14,7 +14,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 /**
- * @property \App\Services\ganchangshangcheng\AppApiService               $service
+ * @property \Echoyl\Sa\Services\AppApiService               $service
  */
 class WeChatController extends ApiBaseController
 {
