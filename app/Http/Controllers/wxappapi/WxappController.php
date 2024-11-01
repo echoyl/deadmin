@@ -8,9 +8,6 @@ use Echoyl\Sa\Services\WechatService;
 use Exception;
 use OpenApi\Annotations as OA;
 
-/**
- * @property \Echoyl\Sa\Services\AppApiService               $service
- */
 class WxappController extends BaseController
 {
     var $dev_session_key = 'Rshqye0gtM7aKWGOqQCEug==';
@@ -18,10 +15,6 @@ class WxappController extends BaseController
     var $dev;
     var $account_id = 0;
     var $app;
-
-    var $app_name_arr = [
-        'user'=>'user_miniprogram_account_id.id'
-    ];
 
     public function __construct()
     {
@@ -55,7 +48,7 @@ class WxappController extends BaseController
         if ($this->dev) {
             return $this->code(false, true);
         }
-        [$code,$app] = $this->service->wechatMiniprogramApp($this->app_name_arr['user']);
+        [$code,$app] = $this->service->wxMiniApp();
         if ($code) {
             return $this->fail([1, $app]);
         }
@@ -119,12 +112,14 @@ class WxappController extends BaseController
             }
 
             if ($login) {
-                //需要直接登录小程序用户
-                $miniprogramUser = WechatService::miniprogramUser($data, $app_id);
+                //创建更新微信小程序用户信息
+                WechatService::miniprogramUser($data, $app_id);
 
                 //修改逻辑 不再自动创建用户信息 - 而是在检测到没有用户信息的时候 返回错误信息后 让用户自己完善用户信息的时候创建
                 //即改变创建用户的触发场景
                 //$this->service->checkUser($data);
+                //如果使用账号密码登录，直接使用openid登录用户
+                //$this->wxOpenidLogin($data['openid']);
 
                 $aus = new ApiUserService;
 
@@ -139,11 +134,6 @@ class WxappController extends BaseController
             return $this->fail([1, 'code解析失败']);
         }
     }
-
-
-
-
-
 
     /**
      * Undocumented function
@@ -185,7 +175,7 @@ class WxappController extends BaseController
             return $this->fail([1, '需要微信授权']);
         }
 
-        [$code,$app] = $this->service->wechatMiniprogramApp($this->app_name_arr['user']);
+        [$code,$app] = $this->service->wxMiniApp();
         if ($code) {
             return $this->fail([$code, $app]);
         }
@@ -205,5 +195,28 @@ class WxappController extends BaseController
         } else {
             return $this->fail([1, '获取手机号码失败']);
         }
+    }
+
+    /**
+     * 通过openid 生成用户信息 不是用手机号码
+     */
+    public function wxOpenidLogin($openid)
+    {
+        //验证码正确 登录账号
+        $from_user_id = 0;
+        $user = $this->service->checkUserByOpenid($openid,$from_user_id);
+        
+        //小程序用户
+
+        //$api_user = $this->service->apiUser();
+        //绑定用户信息
+        WechatService::miniprogramUserBind($openid,$user['id']);
+
+        //d($api_user->currentAccessToken());
+        //将之前的token删除
+
+        //$token = $this->service->login($user['id']);
+
+        return;
     }
 }

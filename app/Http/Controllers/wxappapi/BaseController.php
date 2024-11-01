@@ -6,8 +6,7 @@ use App\Services\HelperService;
 use Echoyl\Sa\Http\Controllers\ApiBaseController;
 
 /**
- * @property \Echoyl\Sa\Services\AppApiService               $service
- * @property \App\Services\HelperService               $hs
+ * @property \App\Services\deadmin\AppApiService               $service
  */
 class BaseController extends ApiBaseController
 {
@@ -26,12 +25,6 @@ class BaseController extends ApiBaseController
 
     var $service;
     var $model;
-    var $hs;
     var $d2a;
     var $is_admin = false;
-    public function __construct()
-    {
-        parent::__construct();
-        $this->hs = new HelperService;
-    }
 }

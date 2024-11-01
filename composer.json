@@ -10,7 +10,8 @@
     },
     "require-dev": {
         "symfony/var-exporter": "^6.3",
-        "fakerphp/faker": "^1.23.0"
+        "fakerphp/faker": "^1.23.0",
+        "viest/php-ext-xlswriter-ide-helper": "dev-master"
     },
     "autoload": {
         "psr-4": {
