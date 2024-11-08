@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'wxappApi'=>\App\Http\Middleware\WxappApi::class,
         'webFirst'=>\App\Http\Middleware\WebFirst::class,
         'wx'=>\App\Http\Middleware\Wx::class,
+        'wxappApiUser'=>\App\Http\Middleware\WxappApiUser::class,
     ];
 
     protected $middlewarePriority = [

@@ -197,6 +197,30 @@ class WxappController extends BaseController
         }
     }
 
+    public function wxPhoneLogin($mobile)
+    {
+        //验证码正确 登录账号
+        $user = $this->service->checkUserByMobile($mobile);
+        
+        //小程序用户
+
+        $api_user = $this->service->apiUser();
+        //绑定用户信息
+        WechatService::miniprogramUserBind($api_user['openid'],$user['id']);
+
+        //d($api_user->currentAccessToken());
+        //将之前的token删除
+        $api_user->currentAccessToken()->delete();
+
+        $aus = new ApiUserService;
+
+        $token = $aus->wechatMiniprogramUserLogin($api_user['openid']);
+
+        //$token = $this->service->login($user['id']);
+
+        return $this->success($token);
+    }
+
     /**
      * 通过openid 生成用户信息 不是用手机号码
      */

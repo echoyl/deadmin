@@ -7,7 +7,7 @@ use Echoyl\Sa\Http\Controllers\admin\IndexController as AdminIndexController;
 
 
 /**
- * @property \Echoyl\Sa\Services\AdminAppService $service
+ * @property \App\Services\deadmin\AdminAppService                $service
  */
 class IndexController extends AdminIndexController
 {
@@ -15,5 +15,10 @@ class IndexController extends AdminIndexController
     public function test()
     {
         return;
+    }
+
+    public function simplePanel()
+    {
+        return $this->success($this->service->simplePanel());
     }
 }
