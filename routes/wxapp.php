@@ -20,7 +20,7 @@ Route::group(['namespace' => 'wxappapi','prefix'=>env('APP_PREFIX','').'wxappapi
         //不需要授权登录的
 
         Route::any('wxapp/loginGetToken', 'WxappController@loginGetToken');
-
+        Route::any('public/getPCA', 'IndexController@getPCA');
         //需要登录授权
 
         Route::middleware(['wxappApi'])->group(function(){

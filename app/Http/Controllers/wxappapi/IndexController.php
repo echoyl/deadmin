@@ -1,12 +1,11 @@
 <?php
 namespace App\Http\Controllers\wxappapi;
 
-use App\Events\PayOrderEvent;
-use App\Http\Controllers\Controller;
+use Echoyl\Sa\Models\Pca;
 use Echoyl\Sa\Services\SetsService;
 use Echoyl\Sa\Services\UploadService;
 
-class IndexController extends Controller
+class IndexController extends BaseController
 {
 
     public function sysinfo()
@@ -46,5 +45,22 @@ class IndexController extends Controller
         //some test things
 
         return 'success';
+    }
+
+    /**
+     * 获取省市区信息 做成通用api
+     *
+     * @return void
+     */
+    public function getPCA()
+    {
+        $top_code = '0';
+        $model = new Pca();
+        $data = $model->select(['name as text', 'code as id', 'code'])->where(['pcode' => $top_code])->with(['children' => function ($q) {
+            $q->select(['name as text', 'code as id', 'pcode','code'])->with(['children' => function ($q2) {
+                $q2->select(['name as text', 'code as id', 'pcode']);
+            }]);
+        }])->get()->toArray();
+        return $this->success($data);
     }
 }
