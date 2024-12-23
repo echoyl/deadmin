@@ -3,7 +3,7 @@ namespace App\Http\Controllers\wx;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\wxappapi\BaseController;
-use App\Http\Controllers\wxappapi\PayController;
+use App\Http\Controllers\wxappapi\deadmin\PayController;
 use Illuminate\Support\Facades\Log;
 
 class WxnotifysController extends BaseController
@@ -29,8 +29,7 @@ class WxnotifysController extends BaseController
             //$type = $message['attach'];
             $pc = new PayController;
             $ret = $pc->doCheck($message->out_trade_no,$message->attach);
-            $ret = $ret->getData(true);
-            if($ret['code'])
+            if(is_string($ret))
             {
                 return $fail(['code' => 'fail', 'message' => 'fail']);
             }
