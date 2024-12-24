@@ -4,11 +4,8 @@
 
 
 ## 效果
-![image](https://echoyl.com/storage/sider_0.9.7.jpg)
 
-![image](https://echoyl.com/storage/light_0.9.6.jpg)
-
-![image](https://echoyl.com/storage/dark_0.9.6.jpg)
+![image](https://echoyl.com/storage/preview.jpg)
 
 ## 开发模式
 
