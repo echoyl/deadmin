@@ -5,7 +5,7 @@ use Echoyl\Sa\Constracts\SaServiceInterface;
 use Echoyl\Sa\Http\Controllers\Controller;
 
 /**
- * @property \App\Services\huayuan\AppApiService               $service
+ * @property \App\Services\deadmin\AppApiService               $service
  */
 class BaseController extends Controller
 {

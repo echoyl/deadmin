@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Echoyl\Sa\Models\web\Menu;
 use App\Services\ImageService;
 use App\Services\WeburlService;
+use Echoyl\Sa\Services\SetsService;
 use Echoyl\Sa\Services\WebMenuService;
 use Echoyl\Sa\Services\WebsiteService;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
@@ -29,6 +31,11 @@ class IndexController extends Controller
         
         $data['news'] = $this->getCategoryData(29, [], 5,false,$where);
 
+        //获取首页配置页面
+        $webindex = (new SetsService())->get('webindex');
+        $ws = new WebMenuService;
+        $webindex = $ws->getSpecsPage($webindex,10000);
+        $data['banners'] = Arr::get($webindex,'banners',[]);
 
         return view('index', $data);
     }
