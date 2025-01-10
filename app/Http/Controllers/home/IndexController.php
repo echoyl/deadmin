@@ -32,9 +32,7 @@ class IndexController extends Controller
         $data['news'] = $this->getCategoryData(29, [], 5,false,$where);
 
         //获取首页配置页面
-        $webindex = (new SetsService())->get('webindex');
-        $ws = new WebMenuService;
-        $webindex = $ws->getSpecsPage($webindex,10000);
+        $webindex = (new SetsService())->get('webindex',10000);
         $data['banners'] = Arr::get($webindex,'banners',[]);
 
         return view('index', $data);

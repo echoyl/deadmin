@@ -1,7 +1,8 @@
 <?php
 
-
 use Echoyl\Sa\Services\HelperService;
+use Echoyl\Sa\Services\web\LangService;
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -250,4 +251,49 @@ function toImageUrl($data,$key,$more=true,$index = 0)
         
     }
     return $ret;
+}
+
+/**
+ * 获取内容多语言字段内容
+ *
+ * @param [type] $val
+ * @param [type] $name
+ * @return void
+ */
+function localeVal($val,$name)
+{
+    return LangService::getVal($val,$name);
+}
+
+/**
+ * 获取数组字段内容 防止报错
+ *
+ * @param [type] $val
+ * @param [type] $name
+ * @return void
+ */
+function getVal($val,$name)
+{
+    return Arr::get($val,$name);
+}
+
+/**
+ * 切割数组成2部分，后面一部分为剩余数据
+ *
+ * @param [type] $array
+ * @param [type] $length
+ * @return void
+ */
+function array_chunk2($array,$length)
+{
+    // 使用 array_chunk 将数组切割成两个部分
+    $chunks = array_chunk($array, $length);
+
+    // 如果数组的长度大于指定的长度，将剩余的元素放入第二个部分
+    if (count($array) > $length) {
+        $result = [$chunks[0], array_merge(...array_slice($chunks, 1))];
+    } else {
+        $result = [$chunks[0], []];
+    }
+    return $result;
 }
