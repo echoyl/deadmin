@@ -6,7 +6,9 @@
     "license": "MIT",
     "require": {
         "darkaonline/l5-swagger": "^8.5",
-        "echoyl/sa": "dev-master"
+        "echoyl/sa": "dev-master",
+        "league/glide": "3.0.0-beta1 as 2.3.0",
+        "league/glide-symfony": "^2.0"
     },
     "require-dev": {
         "symfony/var-exporter": "^6.3",

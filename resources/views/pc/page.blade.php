@@ -8,9 +8,9 @@
 		@endif
 		
 		@foreach ($elements as $element)
-			{{-- "Three Dots" Separator --}}
+			{{-- "Three Dots" Separator 3个点使用 onEachSide(num) 方法后会出现 防止分页过多显示 --}}
 			@if (is_string($element))
-				<div class="pagesList uni-justifyC active">{{ $element }}</div>
+				<div class="pagesList uni-justifyC">{{ $element }}</div>
 			@endif
 
 			{{-- Array Of Links --}}

@@ -16,27 +16,22 @@ class EventSubscriber
         //d($event->message);
         if(env('APP_ENV') == 'local')
         {
-            return;
+            //本地环境不发送消息
+            return 'local env';
         }
 
         $ss = new SetsService();
-        $id = $ss->getBase('offiaccount_account.id');
+        $id = $ss->getBase('offiaccount_account_id.id');
 
         try{
             $app= WechatService::getOffiaccountApp($id);
         }catch(Exception $e)
         {
             Log::channel('daily')->info('wechat message send but account not found.',['error_msg'=>$e->getMessage()]);
-            return;
+            return $e->getMessage();
         }
 
-        if(env('APP_ENV') == 'local')
-        {
-            //本地环境不发送消息
-            return;
-        }
-
-        WechatService::sendMessages($event->messages,$app);
+        return WechatService::sendMessages($event->messages,$app);
     }
 
 
@@ -49,6 +44,7 @@ class EventSubscriber
     {
         $arr = [
             ['App\Events\WxMessageEvent','App\Listeners\EventSubscriber@wechatMessage'],
+            ['Echoyl\Sa\Events\WxMessageEvent','App\Listeners\EventSubscriber@wechatMessage'],
         ];
 
         foreach($arr as $val)
