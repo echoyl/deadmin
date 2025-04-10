@@ -187,7 +187,8 @@ class WxappController extends BaseController
         $mobile = $this->mobile($app, $detail['code']);
 
         if ($mobile) {
-            //$this->service->updateUserMobile($user, $detail['code']);
+            //更新用户手机号码。如果已有该手机号会将当前用户记录删除，并关联到该账号
+            $this->service->updateUserMobile($user, $mobile);
             
             WechatService::miniprogramUserMobile($openid, $mobile);
             //return $this->success($mobile);
