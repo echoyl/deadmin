@@ -5,7 +5,6 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "darkaonline/l5-swagger": "^8.5",
         "echoyl/sa": "dev-master",
         "league/glide-laravel": "^1.0"
     },
