@@ -30,24 +30,6 @@ class WebApi
             $request->offsetSet('post',$body);
         }
 
-        $response = $next($request);
-        $origin = $request->server('HTTP_ORIGIN') ? $request->server('HTTP_ORIGIN') : '';
-
-        if (true && $response && method_exists($response,'header')) {
-            // $response->withHeaders([
-            //     'Access-Control-Allow-Origin'=>$origin
-            // ]);
-            $response->header('access-control-allow-origin', '*');
-            $response->header('access-control-allow-headers', '*');
-            // $response->header('Access-Control-Expose-Headers', 'Authorization, authenticated');
-            $response->header('access-control-allow-methods', '*');
-            $response->header('access-control-allow-credentials', 'true');
-        }
-        return $response;
-
-        // return $next($request)->header('Access-Control-Allow-Origin', '*')
-        // ->header('Access-Control-Allow-Methods', '*')
-        // ->header('Access-Control-Allow-Headers', '*');
-        //->header('Access-Control-Allow-Credentials', 'true');
+        return $next($request);
     }
 }
