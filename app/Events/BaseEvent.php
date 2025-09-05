@@ -6,6 +6,7 @@ use Echoyl\Sa\Models\wechat\miniprogram\user\Bind;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 class BaseEvent
@@ -22,24 +23,51 @@ class BaseEvent
 
     public function getUserOpenid($user_id)
     {
-        $bind = (new Bind())->where(['user_id'=>$user_id])->first();
-        if(!$bind)
+        if(!is_array($user_id))
         {
-            return '';
-        } 
-        $wxappuser = (new User())->where(['openid'=>$bind['openid']])->with(['offiaccountUser'])->first();
-        //d($wxappuser);
-        if(!$wxappuser)
+            $user_id = [$user_id];
+        }
+
+        $data = (new Bind())->with(['user.offiaccountUser'])->whereIn('user_id',$user_id)->get()->toArray();
+        $openids= [];
+        foreach($data as $val)
         {
-            return '';
+            $openid = Arr::get($val,'user.offiaccount_user.openid');
+            if($openid)
+            {
+                $openids[] = $openid;
+            }
         }
-        $wxappuser = $wxappuser->toArray();
-        if(!$wxappuser['offiaccount_user'])
-        {   
-            Log::channel('daily')->info('用户无微信用户',[]);
-            return '';
+        return $openids;
+    }
+
+    public function getWxappOpenid($openid)
+    {
+        if(!is_array($openid))
+        {
+            $openid = [$openid];
         }
-        return $wxappuser['offiaccount_user']['openid'];
+
+        $data = (new User())->with(['offiaccountUser'])->whereIn('openid',$openid)->get()->toArray();
+        $openids= [];
+        foreach($data as $val)
+        {
+            $openid = Arr::get($val,'offiaccount_user.openid');
+            if($openid)
+            {
+                $openids[] = $openid;
+            }
+        }
+        return $openids;
+    }
+
+    public function getOpenid($openid)
+    {
+        if(!is_array($openid))
+        {
+            $openid = [$openid];
+        }
+        return $openid;
     }
 
     public function toMiniprogram($mini,$param = [],$path = 'pages/index/index')
