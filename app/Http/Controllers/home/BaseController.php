@@ -33,12 +33,25 @@ class BaseController extends Controller
         }
         $type = $type?'/'.$type:'';
 
-        if ($tpl && view()->exists('tpl/' . $tpl . $type)) {
-            return view('tpl/' . $tpl . $type, $data);
-        }elseif (view()->exists('tpl/' . $menu['alias'].$type)) {
-            return view('tpl/' . $menu['alias'].$type, $data);
-        } else {
-            return view('tpl/'.($type?:'default'), $data);
+        //d($menu['alias'],$tpl,'tpl/' . $menu['alias'].$type);
+
+        $tpls = [
+            $menu['alias'].$type,
+            $menu['alias'],
+            $type?:'default',
+        ];
+
+        if($tpl)
+        {
+            array_unshift($tpls,$tpl.$type);
+        }
+        
+        foreach($tpls as $tpl)
+        {
+            if(view()->exists('tpl/' . $tpl))
+            {
+                return view('tpl/' . $tpl, $data);
+            }
         }
     }
 }

@@ -247,7 +247,7 @@ function toImageUrl($data,$key,$more=true,$index = 0)
             }
         }else
         {
-            $ret = $data[$key]['url'];
+            $ret = $data['url'];
         }
     }
     return $ret;
