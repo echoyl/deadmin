@@ -229,18 +229,19 @@ function captcha_img_html($config = 'default',array $attrs = [])
 function toImageUrl($data,$key,$more=true,$index = 0)
 {
     $ret = '';
-    if(isset($data[$key]))
+    $data = Arr::get($data,$key);
+    if($data)
     {
         if($more)
         {
-            if(!empty($data[$key]) && isset($data[$key][$index]))
+            if(!empty($data) && isset($data[$index]))
             {
-                if(isset($data[$key][$index]['url']))
+                if(isset($data[$index]['url']))
                 {
-                    $ret = $data[$key][$index]['url'];
+                    $ret = $data[$index]['url'];
                 }else
                 {
-                    $ret = tomedia($data[$key][$index]['value']);
+                    $ret = tomedia($data[$index]['value']);
                 }
                 
             }
@@ -248,7 +249,6 @@ function toImageUrl($data,$key,$more=true,$index = 0)
         {
             $ret = $data[$key]['url'];
         }
-        
     }
     return $ret;
 }
