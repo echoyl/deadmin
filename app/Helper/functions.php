@@ -232,6 +232,11 @@ function toImageUrl($data,$key,$more=true,$index = 0)
     $data = Arr::get($data,$key);
     if($data)
     {
+       
+        if(is_string($data))
+        {
+            $data = json_decode($data,true);
+        }
         if($more)
         {
             if(!empty($data) && isset($data[$index]))
@@ -243,7 +248,6 @@ function toImageUrl($data,$key,$more=true,$index = 0)
                 {
                     $ret = tomedia($data[$index]['value']);
                 }
-                
             }
         }else
         {
@@ -296,4 +300,18 @@ function array_chunk2($array,$length)
         $result = [$chunks[0], []];
     }
     return $result;
+}
+
+/**
+ * 超出长度后截取
+ *
+ * @param string $desc
+ * @param integer $length
+ * @param string $sufix
+ * @return void
+ */
+function shortDesc($desc = '', $length = 100,$sufix = '...')
+{
+    $desc = strip_tags($desc);
+    return strlen($desc) > $length ? mb_substr($desc, 0, $length) . $sufix : $desc;
 }
