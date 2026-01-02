@@ -10,8 +10,9 @@
         "league/glide-symfony": "^2.0"
     },
     "require-dev": {
-        "symfony/var-exporter": "^6.3",
         "fakerphp/faker": "^1.23.0",
+        "laravel/pint": "^1.25",
+        "symfony/var-exporter": "^6.3",
         "viest/php-ext-xlswriter-ide-helper": "dev-master"
     },
     "autoload": {
