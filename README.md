@@ -1,41 +1,29 @@
 ## 版本
 
-v1.0.0 2026/01/02
-
-## 在线体验
-
-[线上地址](https://echoyl.com/antadmin)
-账号密码 test 123456
+v1.0.6 2026/01/15
 
 ## 安装
 
-使用 `git` 克隆代码后使用 `composer` 安装依赖
-
 ```bash
-#github
-$ git clone https://github.com/echoyl/deadmin.git
-#或码云
-$ git clone https://gitee.com/deadmin/deadmin.git
 
-#复制配置文件
+$ laravel new example-app
 
-$ cp .env.backup .env
-#修改配置文件中
-#APP_NAME=你的项目名称如：echoyl 必须英文，生成表名使用该名称作为前缀
-#DB_DATABASE=你的数据库名称如：echoyl 并创建该数据库
-#数据库账号及密码
+$ cd example-app
 
-#设置composer源 aliyun的不知道为什么更新速度很慢
-$ composer config repo.packagist composer https://mirrors.cloud.tencent.com/composer/
+#修改配置文件中 ./.env
 
-#安装拓展包
-$ composer update
+#APP_NAME=你的项目名称如：deadmin 必须英文，生成表名使用该名称作为前缀
+#DB_DATABASE=你的数据库名称如：deadmin 并创建该数据库配置数据库账号及密码
+#修改文件系统类型
+#FILESYSTEM_DISK=public
 
-#线上安装拓展包
-$ composer update --no-dev
+#修改数据库配置文件 表前缀 ./config/database.php
+# 'connections.mysql.prefix'=>'la_'
+
+$ composer require echoyl/sa
 
 #迁移前端静态文件 及 配置文件
-$ php artisan deadmin:publish
+$ php artisan deadmin:publish --force
 
 #如果使用的laravel版本 >= 11，还需要额外运行下列命令
 $ php artisan vendor:publish --tag=sanctum-migrations
