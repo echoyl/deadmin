@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "echoyl/sa": "^1.0",
-        "league/glide": "3.0.0-beta1 as 2.3.0",
+        "league/glide": "^3.0",
         "league/glide-symfony": "^2.0"
     },
     "require-dev": {

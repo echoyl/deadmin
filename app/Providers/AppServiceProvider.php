@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Extensions\MySqlGrammar;
+use App\Extensions\MySqlProcessor;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -17,7 +19,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        //$this->app->bind(\App\Constracts\SaServiceInterface::class,config('sa.service'));
     }
 
     /**
@@ -28,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        $connection = $this->app->make('db')->connection();
+        $connection->setSchemaGrammar(new MySqlGrammar($connection));
+        $connection->setPostProcessor(new MySqlProcessor);
+
         Blade::component('components.footer', 'footer');
         View::share("pstatic", URL::asset(env('APP_PREFIX', '') . 'webstatic/pc'));
         View::share("mstatic", URL::asset(env('APP_PREFIX', '') . 'webstatic/mobile'));
