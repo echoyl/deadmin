@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         $connection->setPostProcessor(new MySqlProcessor);
 
         Blade::component('components.footer', 'footer');
-        View::share("pstatic", URL::asset(env('APP_PREFIX', '') . 'webstatic/pc'));
-        View::share("mstatic", URL::asset(env('APP_PREFIX', '') . 'webstatic/mobile'));
+        View::share('pstatic', URL::asset(env('APP_PREFIX', '').'webstatic/pc'));
+        View::share('mstatic', URL::asset(env('APP_PREFIX', '').'webstatic/mobile'));
     }
 }
