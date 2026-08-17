@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Middleware\WebApi;
 use App\Http\Middleware\WebFirst;
 use App\Http\Middleware\Wx;
 use App\Http\Middleware\WxApi;
 use App\Http\Middleware\WxappApi;
 use App\Http\Middleware\WxappApiUser;
 use Echoyl\Sa\Exceptions\AException;
+use Echoyl\Sa\Helpers\ResponseEnum;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -22,7 +22,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectTo(fn () => null);
         $middleware->alias([
             'webFirst' => WebFirst::class,
-            'webApi' => WebApi::class,
             'wx' => Wx::class,
             'wxApi' => WxApi::class,
             'wxappApi' => WxappApi::class,
@@ -34,12 +33,13 @@ return Application::configure(basePath: dirname(__DIR__))
             //
         });
         $exceptions->render(function (Throwable $e) {
+            [$code] = ResponseEnum::CLIENT_HTTP_UNAUTHORIZED_EXPIRED;
             if (request()->ajax() || request()->wantsJson() || request()->isJson()) {
                 return response()->json([
-                    'msg' => $e->getMessage(),
+                    'msg' => implode("\r", [$e->getMessage(), $e->getFile().$e->getLine()]),
                     'code' => match (true) {
                         $e instanceof AException => $e->getCode(),
-                        $e instanceof AuthenticationException => 1001,
+                        $e instanceof AuthenticationException => $code,
                         default => 1,
                     },
                     'data' => [],
